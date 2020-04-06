@@ -1,0 +1,41 @@
+{
+  "name": "electron-vue-example",
+  "version": "1.0.0",
+  "description": "...",
+  "main": "background.js",
+  "typings": "types/index.d.ts",
+  "repository": "https://github.com/kenote/electron-vue-example.git",
+  "author": "thondery <thondery@163.com>",
+  "license": "MIT",
+  "productName": "应用名称",
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.2.3",
+    "@vue/cli-plugin-typescript": "^4.2.3",
+    "@vue/cli-service": "^4.2.3",
+    "awesome-typescript-loader": "^5.2.1",
+    "cross-env": "^7.0.2",
+    "electron": "^8.2.0",
+    "sass": "^1.26.3",
+    "sass-loader": "^8.0.2",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
+    "tslint": "^6.1.0",
+    "typescript": "^3.8.3",
+    "vue-cli-plugin-electron-builder": "^1.4.6",
+    "vue-devtools": "^5.1.3",
+    "vue-html-loader": "^1.2.4",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.42.1"
+  },
+  "dependencies": {
+    "vue": "^2.6.11",
+    "vue-electron": "^1.0.6",
+    "vue-property-decorator": "^8.4.1",
+    "vue-router": "^3.1.6",
+    "vuex": "^3.1.3"
+  },
+  "scripts": {
+    "build": "vue-cli-service electron:build",
+    "build:win": "vue-cli-service electron:build --windows",
+    "start": "vue-cli-service electron:serve"
+  }
+}
