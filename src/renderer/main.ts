@@ -3,6 +3,8 @@ import VueElectron from 'vue-electron'
 import App from '~/renderer/App.vue'
 import store from '~/renderer/store'
 import router from '~/renderer/router'
+import '~/renderer/plugins/component'
+import '~/renderer/plugins/element-ui'
 
 Vue.config.productionTip = false
 Vue.use(VueElectron)
