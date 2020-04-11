@@ -4,9 +4,11 @@ import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import * as path from 'path'
 import config, { isDevelopment, __MACOS__ } from '~/main/config'
 import { getProtocolUrl } from '~/main/utils'
+import ipcEvent from '~/main/modules/ipcEvent'
 
 let win: BrowserWindow | null
 const { appName, protocol, startUrl, windowOptions, aboutPanelOptions } = config
+
 
 if (__MACOS__) {
   app.setAboutPanelOptions(aboutPanelOptions||{})
@@ -91,6 +93,8 @@ async function start () {
         win.focus()
       }
     })
+    // ipcEvent
+    ipcEvent(win!)
   } catch (error) {
     console.error(error)
   }

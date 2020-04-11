@@ -8,6 +8,10 @@ const electron = require('electron/package.json')
 export const __MACOS__: boolean  = process.platform === 'darwin'
 // 是否是开发模式
 export const isDevelopment: boolean = process.env.NODE_ENV !== 'production'
+// 设置 NEDB 目录
+export const __NEDB__: string = 'nedb'
+// 判断是否渲染层
+export const isRenderer: boolean = globalThis.isRenderer
 
 const config: Configuration = {
   // 应用名称

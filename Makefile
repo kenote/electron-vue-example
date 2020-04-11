@@ -1,4 +1,22 @@
 
+all: install
+
+clear:
+	@rm -rf node_modules
+	@rm -rf pagkage-lock.json
+	@rm -rf yarn-error.log
+	@rm -rf yarn.lock
+
+install:
+	@npm install
+
+reinstall:
+	@make clear
+	@make install
+	
+update:
+	@npm update
+
 # need brew instll icoutils
 icons:
 	@sips -z 256 256 icon.png --out icons.iconset/icon_256x256.png

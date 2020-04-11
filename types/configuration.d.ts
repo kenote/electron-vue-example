@@ -1,15 +1,32 @@
 import { BrowserWindowConstructorOptions, AboutPanelOptionsOptions } from 'electron'
 
-
+/**
+ * 应用配置
+ */
 export interface Configuration {
 
-  appName: string
+  /**
+   * 应用名称
+   */
+  appName                  : string
 
-  protocol: string
+  /**
+   * 协议头
+   */
+  protocol                 : string
 
-  startUrl: string
+  /**
+   * 启动页
+   */
+  startUrl                 : string
 
-  aboutPanelOptions?: AboutPanelOptionsOptions
+  /**
+   * 关于面板选项
+   */
+  aboutPanelOptions       ?: AboutPanelOptionsOptions
 
-  windowOptions?: BrowserWindowConstructorOptions
+  /**
+   * 主窗体属性
+   */
+  windowOptions           ?: BrowserWindowConstructorOptions
 }

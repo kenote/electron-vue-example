@@ -26,6 +26,11 @@
         "./*"
       ]
     },
+    "plugins": [
+      {
+        "transform": "ts-optchain/transform"
+      }
+    ],
     "types": [
       "@types/node"
     ]
