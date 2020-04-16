@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu } from 'electron'
+import { app, BrowserWindow, Menu,  protocol as EProtocl } from 'electron'
 import { applicationMenu } from '~/main/modules/menu'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import * as path from 'path'
@@ -9,6 +9,12 @@ import ipcEvent from '~/main/modules/ipcEvent'
 let win: BrowserWindow | null
 const { appName, protocol, startUrl, windowOptions, aboutPanelOptions } = config
 
+/**
+ * fix: Failed to read the 'localStorage' property from 'Window': Access is denied for this document.
+ */
+EProtocl.registerSchemesAsPrivileged([
+  { scheme: 'app', privileges: { standard: true, supportFetchAPI: true, secure: true } }
+])
 
 if (__MACOS__) {
   app.setAboutPanelOptions(aboutPanelOptions||{})
@@ -54,6 +60,37 @@ async function createWindow (): Promise<void> {
       win.webContents.send('blurWindow')
     }
   })
+  // 监听窗口最大化
+  win.on('maximize', () => {
+    if (win && win.webContents) {
+      win.webContents.send('maximizeWindow')
+    }
+  })
+  // 监听窗口最大化还原
+  win.on('unmaximize', () => {
+    if (win && win.webContents) {
+      win.webContents.send('unmaximizeWindow')
+    }
+  })
+  // 监听窗口全屏化
+  win.on('enter-full-screen', () => {
+    if (win && win.webContents) {
+      win.webContents.send('enterfullscreenWindow')
+    }
+  })
+  // 监听窗口全屏化还原
+  win.on('leave-full-screen', () => {
+    if (win && win.webContents) {
+      win.webContents.send('leavefullscreenWindow')
+    }
+  })
+
+  // 初次加载时事件
+  win.once('ready-to-show', () => {
+    if (win) {
+      win.show()
+    }
+  })
   // 加载顶部菜单
   Menu.setApplicationMenu(applicationMenu(win))
   // 开发模式设置
@@ -64,6 +101,7 @@ async function createWindow (): Promise<void> {
       BrowserWindow.addDevToolsExtension(path.resolve(process.cwd(), 'vue-devtools'))
     }
   }
+  // win.webContents.openDevTools()
 }
 
 // 启动应用

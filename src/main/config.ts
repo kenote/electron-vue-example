@@ -34,9 +34,7 @@ const config: Configuration = {
     height: 668,
     minWidth: 1000,
     minHeight: 668,
-    frame: !__MACOS__,
-    titleBarStyle: __MACOS__ ? 'default' : 'hiddenInset',
-    autoHideMenuBar: true,
+    frame: false,
     resizable: true
   }
 

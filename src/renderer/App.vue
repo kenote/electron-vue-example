@@ -9,18 +9,14 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import './assets/scss/main.scss'
+import { __MACOS__ } from '~/main/config'
+import { UserProxy } from '@/types/proxys/user'
+import '~/renderer/assets/iconfont/iconfont.css'
 
 @Component<App>({
   
-  created () {
+  async created () {
     
-    this.$store.commit('setting/SETNAME', 'ppp')
-    console.log(this.$electron, this.$store)
-    // let win = this.$electron.remote.getCurrentWindow()
-    // win.maximize()
-    // let isFullscreen = win.isFullScreen()
-    // win.setFullScreen(!isFullscreen)
-    // this.$electron.ipcRenderer.send('win-tools', 'hide')
     
   }
 })
