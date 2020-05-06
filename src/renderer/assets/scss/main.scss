@@ -1,6 +1,7 @@
 // ------------------------------------
 // Sass Style
 // ------------------------------------
+@import './themeify.scss';
 html {
   box-sizing: border-box;
 }
@@ -12,6 +13,20 @@ body {
   height: 100%;
   font-family: Quicksand,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
   line-height: 1.5;
-  color: #2f495e;
+  // color: #2f495e;
+  @include font-color('font-color');
+
+  user-select: none;
 }
 
+a {
+  @include font-color('font-color-link');
+
+  &:hover {
+    @include font-color('font-color-link-hover');
+  }
+
+  &.router-link-exact-active {
+    @include font-color('font-color-link-active');
+  }
+}

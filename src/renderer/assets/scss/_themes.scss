@@ -1,0 +1,95 @@
+// ------------------------------------
+// Sass Style
+// ------------------------------------
+
+// 设置主题
+$themes: (
+
+  // 绿色
+  light-green: (
+
+    // Background Color
+    bg-color-main: #fff,
+    bg-color-header: #11bd9f,
+    bg-color-header-iconhover: #20af96,
+    bg-color-popover: #fff,
+    bg-color-aside: #ededed,
+    bg-color-footer: #fff,
+
+    // Border Color
+    border-color-footer: #f9f9f9,
+
+    // Perfect Scrollbar
+    ps__thumb_color: #aaa,
+
+    // Font Color
+    font-color: #484848,
+    font-color-link: #d4d4d4,
+    font-color-link-hover: #e6e6e6,
+    font-color-link-active: #fff,
+    font-color-link-disabled: #dddddd65,
+    font-color-head-link: #d4d4d4,
+    font-color-head-link-hover: #e6e6e6,
+    font-color-head-link-active: #fff,
+    font-color-head-link-disabled: #dddddd65,
+  ),
+
+  // 红色
+  light-red: (
+
+    // Background Color
+    bg-color-main: #fff,
+    bg-color-header: #da4d4a,
+    bg-color-header-iconhover: #ca4643,
+    bg-color-popover: #fff,
+    bg-color-aside: #ededed,
+    bg-color-footer: #fff,
+
+    // Border Color
+    border-color-footer: #f9f9f9,
+
+    // Perfect Scrollbar
+    ps__thumb_color: #aaa,
+
+    // Font Color
+    font-color: #484848,
+    font-color-link: #484848,
+    font-color-link-hover: #111111,
+    font-color-link-active: #fff,
+    font-color-link-disabled: #dddddd35,
+    font-color-head-link: #eeacab,
+    font-color-head-link-hover: #e6e6e6,
+    font-color-head-link-active: #fff,
+    font-color-head-link-disabled: #dddddd35,
+  ),
+
+  // 暗黑
+  dark: (
+
+    // Background Color
+    bg-color-main: #252525,
+    bg-color-header: #2d2d2d,
+    bg-color-header-iconhover: #3b3b3b,
+    bg-color-popover: #363636,
+    bg-color-aside: #202020,
+    bg-color-footer: #252525,
+
+    // Border Color
+    border-color-footer: #242424,
+
+    // Perfect Scrollbar
+    ps__thumb_color: #444,
+
+    // Font Color
+    font-color: #b2b2b2,
+    font-color-link: #a3a3a3,
+    font-color-link-hover: #e6e6e6,
+    font-color-link-active: #d63a36,
+    font-color-link-disabled: #dddddd65,
+    font-color-head-link: #a3a3a3,
+    font-color-head-link-hover: #e6e6e6,
+    font-color-head-link-active: #d63a36,
+    font-color-head-link-disabled: #dddddd65,
+  ),
+    
+);

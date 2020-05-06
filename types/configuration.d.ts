@@ -13,7 +13,7 @@ export interface Configuration {
   /**
    * 协议头
    */
-  protocol                 : string
+  scheme                   : string
 
   /**
    * 启动页
@@ -29,4 +29,9 @@ export interface Configuration {
    * 主窗体属性
    */
   windowOptions           ?: BrowserWindowConstructorOptions
+
+  /**
+   * Tray 图标
+   */
+  trayIcon                ?: string
 }

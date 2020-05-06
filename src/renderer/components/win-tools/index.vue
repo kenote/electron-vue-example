@@ -13,6 +13,7 @@
 
 <script lang="ts">
 import { Component, Vue, Provide, Prop, Watch } from 'vue-property-decorator'
+import { ipcRenderer } from 'electron'
 
 @Component<WinTools>({
   name: 'win-tools',
@@ -37,7 +38,6 @@ export default class WinTools extends Vue {
 
   @Prop({ default: false }) isMacos!: boolean 
   @Prop({ default: false }) ismaximize!: boolean
-  @Prop({ default: 'quit' }) closeMode!: 'hide' | 'quit'
 
   @Provide() blurStyle: string = ''
   @Provide() maximizeStyle: string = 'icon-square'
@@ -52,7 +52,7 @@ export default class WinTools extends Vue {
    * 关闭窗口
    */
   handleClose () {
-    this.$electron.ipcRenderer.send('win-tools', this.closeMode)
+    ipcRenderer.send('win-tools', 'hide')
   }
 
   /**

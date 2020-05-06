@@ -1,8 +1,8 @@
-
+import * as path from 'path'
 import { Configuration } from '@/types/configuration'
 
 const pkg = require('@/package.json')
-const electron = require('electron/package.json')
+export const electron = require('electron/package.json')
 
 // 是否 Mac 环境
 export const __MACOS__: boolean  = process.platform === 'darwin'
@@ -12,12 +12,18 @@ export const isDevelopment: boolean = process.env.NODE_ENV !== 'production'
 export const __NEDB__: string = 'nedb'
 // 判断是否渲染层
 export const isRenderer: boolean = globalThis.isRenderer
+// APP 静态主路径
+export const appRoot: string = isDevelopment
+  ? path.resolve(process.cwd(), 'public')
+  : path.resolve(__dirname)
+// 
+export type BrowserTypes = 'main'
 
 const config: Configuration = {
   // 应用名称
   appName: pkg.productName || '应用名称',
   // 定义协议头
-  protocol: 'app',
+  scheme: 'app',
   // 启动页
   startUrl: './index.html',
   // 关于面板选项
@@ -35,9 +41,11 @@ const config: Configuration = {
     minWidth: 1000,
     minHeight: 668,
     frame: false,
+    // titleBarStyle: 'hiddenInset',
     resizable: true
-  }
-
+  },
+  // Tray 图标
+  trayIcon: 'images/icon_16x16.png'
 }
 
 export default config

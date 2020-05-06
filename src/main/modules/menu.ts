@@ -4,7 +4,7 @@ const __MACOS__  = process.platform === 'darwin'
 
 function getApplicationMenuTemplate (win: BrowserWindow) {
   let applicationMenuTemplate: Array<MenuItem | MenuItemConstructorOptions> = []
-
+  let productName: string = win.getTitle()
   if (__MACOS__) {
     applicationMenuTemplate.unshift({
       label: 'myapp',
@@ -17,9 +17,21 @@ function getApplicationMenuTemplate (win: BrowserWindow) {
           type: 'separator'
         },
         {
-          label: `退出 myapp`,
+          label: `重启 ${productName}`,
+          click: () => {
+            app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']) })
+            app.exit(0)
+          }
+        },
+        {
+          type: 'separator'
+        },
+        {
+          label: `退出 ${productName}`,
           accelerator: 'Command+Q',
-          click: app.quit
+          click: () => {
+            app.quit()
+          }
         }
       ]
     }, {

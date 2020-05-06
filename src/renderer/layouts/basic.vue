@@ -1,27 +1,98 @@
 <template>
   <fragment>
-    <header ref="theHeader" @dblclick="handleDbclick">
+    <header ref="theHeader">
       <topbar-logo :is-macos="platform === 'darwin'">
-
+        
       </topbar-logo>
       <div class="topbar-main">
-        <div></div>
-        <win-tools v-if="platform != 'darwin'"
-          :is-macos="platform === 'darwin'" 
-          :ismaximize="ismaximize"
-          />
+        <div style="width:100%;height:100%" @dblclick="handleDbclick">   </div>
+        <div style="display:flex;align-items:center">
+          <router-link class="iconfont icon-setting" to="/setting"></router-link>
+          <!-- 打开/关闭 信件 -->
+          <a class="iconfont icon-email" @click="handleEmail" v-bind:class="visibleEmail ? 'router-link-exact-active' : ''"></a>
+          
+          <!-- 选择主题 -->
+          <el-popover placement="bottom" width="200" trigger="click" @show="handleShowThemes" @hide="handleHideThemes">
+            <win-themesetting v-model="themeName" />
+            <el-button type="text" class="iconfont icon-skin" slot="reference" v-bind:class="selectThemeStyle"></el-button>
+          </el-popover>
+          <!-- 自定义 Window 窗口 -->
+          <win-tools v-if="platform != 'darwin'"
+            :is-macos="platform === 'darwin'" 
+            :ismaximize="ismaximize"
+            />
+        </div>
       </div>
     </header>
-    <main>
-      <slot></slot>
-    </main>
+    
+    <el-container ref="theContainer">
+      <el-aside :width="siderWidth + 'px'" ref="theAside">
+        <perfect-scrollbar>
+          <div>
+            start<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            ...<br>
+            end
+          </div>
+        </perfect-scrollbar>
+          <div ref="handle" class="split-handle"></div>
+      </el-aside>
+      <el-main ref="theMain">
+        <perfect-scrollbar>
+          <div style="padding:20px">
+            <transition  name="fade" mode="out-in">
+              <router-view />
+            </transition>
+          </div>
+          <!-- <div></div> -->
+        </perfect-scrollbar>
+      </el-main>
+      <main-drawer :width="350" :visible="visibleEmail" @close="handleCloseEmail" />
+    </el-container>
+    <footer>
+
+    </footer>
   </fragment>
 </template>
 
 <script lang="ts">
-import { Component, Vue, Provide } from 'vue-property-decorator'
+import { Component, Vue, Provide, Watch } from 'vue-property-decorator'
 import TopbarLogo from '~/renderer/components/topbar/logo.vue'
 import { remote, ipcRenderer } from 'electron'
+import { oc } from 'ts-optchain'
+import throttle from 'lodash/throttle'
+import * as setting from '~/renderer/store/modules/setting'
+import { settingTypes, Setting } from '~/renderer/utils/vuex'
+
+const SIDER_WIDTH_DEFAULT: number = 200
+const SIDER_WIDTH_MAX: number = 400
 
 @Component<BasicLayout>({
   name: 'basic-layout',
@@ -35,12 +106,84 @@ import { remote, ipcRenderer } from 'electron'
     this.$electron.ipcRenderer.on('unmaximizeWindow', (evt, agrs) => {
       this.ismaximize = false
     })
+    this.themeName = this.theme
+  },
+  mounted () {
+    this.handleResize()
+    window.addEventListener('resize', this.handleResize, true)
+
+    this.handleResizeSide()
+  },
+  beforeDestroy () {
+    window.removeEventListener('resize', this.handleResize, false)
   }
 })
 export default class BasicLayout extends Vue {
 
+  // @State('setting') Setting!: setting.State
+  @Setting.State theme!: string
+
   @Provide() platform: string = this.$electron.remote.process.platform
   @Provide() ismaximize: boolean = false
+  @Provide() siderWidth: number = SIDER_WIDTH_DEFAULT
+  @Provide() mouse = { isDown: false, startX: 0 }
+  @Provide() themeName: string = 'auto'
+  @Provide() visibleEmail: boolean = false
+  @Provide() selectThemeStyle: string = ''
+
+  @Watch('themeName')
+  onChangeTheme (theme: string): void {
+    this.$store.commit(settingTypes.SETHEME, theme)
+  }
+
+  handleShowThemes () {
+    this.selectThemeStyle = 'showopen'
+  }
+
+  handleHideThemes () {
+    this.selectThemeStyle = ''
+  }
+
+  handleEmail () {
+    this.visibleEmail = !this.visibleEmail
+  }
+
+  handleCloseEmail () {
+    this.visibleEmail = false
+  }
+
+  handleResize () {
+    setContainerHeight(this.$refs['theAside'] as Vue)
+    setContainerHeight(this.$refs['theMain'] as Vue)
+  }
+
+  handleResizeSide () {
+    let dragging: boolean = false
+    let clickX: number
+    let leftOffset: number
+    let handle = this.$refs['handle'] as HTMLElement
+    let container = this.$refs['theContainer']['$el'] as HTMLElement
+
+    handle.onmousedown = e => {
+      dragging = true
+      leftOffset = container.offsetLeft + 20
+    }
+
+    document.onmousemove = e => {
+      if (!dragging) return
+      clickX = e.pageX
+      if (!(clickX > 200 && clickX < 400)) {
+        return
+      }
+      this.siderWidth = clickX
+    }
+
+    document.onmouseup = e => {
+      dragging = false
+      e.cancelBubble = true
+    }
+    
+  }
 
   handleDbclick () {
     let win = this.$electron.remote.getCurrentWindow()
@@ -53,15 +196,28 @@ export default class BasicLayout extends Vue {
   }
   
 }
+
+function setContainerHeight (ele: Vue): void {
+  try {
+    let ps : HTMLElement = ele.$children[0]['ps'].element
+    ps.style.height = ele.$el.clientHeight + 'px'
+  } catch (error) {
+    console.error(error)
+  }
+}
 </script>
 
-<style lang="scss">
+<style lang="scss" >
+@import '~/renderer/assets/scss/_themeify.scss';
 header {
-  height: 50px;
+  height: 58px;
+  padding: 0;
   -webkit-app-region: drag;
   display: flex;
-  border-bottom: 1px #ccc solid;
-  background: #0000001a;
+  // border-bottom: 1px #ccc solid;
+  @include background-color('bg-color-header');
+  transition: all .5s;
+
 
 
   .topbar-main {
@@ -70,6 +226,117 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 0 5px 0 0;
+
+
+
+    a.iconfont, span>.iconfont {
+      padding: 4px;
+      display: block;
+      cursor: default;
+      margin: 4px;
+      width: 20px;
+      height: 20px;
+      line-height: 20px;
+      border-radius: 20px;
+      text-decoration: none;
+      text-align: center;
+      @include font-color('font-color-head-link');
+      -webkit-font-smoothing: antialiased;
+
+      &.icon-email {
+        font-size: 20px;
+      }
+
+      &:last-child {
+        margin-right: 12px;
+      }
+
+      &:hover {
+        @include background-color('bg-color-header-iconhover');
+      }
+
+      &.router-link-exact-active {
+        @include font-color('font-color-head-link-active');
+      }
+    }
+
+    span>.iconfont {
+      @include font-color('font-color-head-link');
+      width: 28px;
+      height: 28px;
+      font-size: 18px;
+      padding: 2px 4px;
+
+      &:hover {
+        @include font-color('font-color-head-link-hover');
+      }
+
+      &.showopen {
+        @include font-color('font-color-head-link-active');
+        @include background-color('bg-color-header-iconhover');
+      }
+    }
   }
 }
+
+.el-container {
+  height: inherit;
+  overflow: hidden;
+  position: relative;
+
+  .el-aside {
+    position: relative;
+    overflow: hidden;
+    @include background-color('bg-color-aside');
+    
+    .split-handle {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      width: 5px;
+      cursor: col-resize;
+    }
+  }
+
+  .el-main {
+    padding: 0;
+    overflow: hidden;
+
+  }
+
+  .el-drawer__wrapper {
+    position: absolute;
+    pointer-events: none;
+  }
+}
+
+footer {
+  height: 65px;
+  // background: #0000001a;
+  border-top: 1px transparent solid;
+  @include background-color('bg-color-footer');
+  @include themeify {
+      border-color: themed('border-color-footer')!important;
+    }
+}
+
+
+
+.el-popper {
+  @include background-color('bg-color-popover');
+  border: 0px !important;
+
+  .popper__arrow {
+    @include themeify {
+      border-bottom-color: themed('bg-color-popover')!important;
+    }
+    &::after {
+      @include themeify {
+        border-bottom-color: themed('bg-color-popover')!important;
+      }
+    }
+  }
+}
+
 </style>

@@ -6,6 +6,20 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "8730406",
+      "name": "safety certificate-fill",
+      "font_class": "safetycertificate-fill",
+      "unicode": "eebd",
+      "unicode_decimal": 61117
+    },
+    {
+      "icon_id": "13165611",
+      "name": "setting",
+      "font_class": "setting",
+      "unicode": "e601",
+      "unicode_decimal": 58881
+    },
+    {
       "icon_id": "4842795",
       "name": "minimize",
       "font_class": "minimize",
@@ -74,13 +88,6 @@
       "font_class": "email",
       "unicode": "e74f",
       "unicode_decimal": 59215
-    },
-    {
-      "icon_id": "11488168",
-      "name": "set",
-      "font_class": "set",
-      "unicode": "e76c",
-      "unicode_decimal": 59244
     },
     {
       "icon_id": "12011697",
