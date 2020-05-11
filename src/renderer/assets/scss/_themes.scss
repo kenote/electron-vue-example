@@ -15,9 +15,12 @@ $themes: (
     bg-color-popover: #fff,
     bg-color-aside: #ededed,
     bg-color-footer: #fff,
+    bg-color-radio-inner-hover: #efefef,
+    bg-color-radio-inner-active: #a3a3a3,
 
     // Border Color
     border-color-footer: #f9f9f9,
+    border-color-radio-inner: #dcdfe6,
 
     // Perfect Scrollbar
     ps__thumb_color: #aaa,
@@ -28,10 +31,14 @@ $themes: (
     font-color-link-hover: #e6e6e6,
     font-color-link-active: #fff,
     font-color-link-disabled: #dddddd65,
+    font-color-head: #fff,
     font-color-head-link: #d4d4d4,
     font-color-head-link-hover: #e6e6e6,
     font-color-head-link-active: #fff,
     font-color-head-link-disabled: #dddddd65,
+    font-color-radio-inner: #606266,
+    font-color-radio-inner-hover: #565656,
+    font-color-radio-inner-active: #fff,
   ),
 
   // 红色
@@ -44,9 +51,12 @@ $themes: (
     bg-color-popover: #fff,
     bg-color-aside: #ededed,
     bg-color-footer: #fff,
+    bg-color-radio-inner-hover: #efefef,
+    bg-color-radio-inner-active: #a3a3a3,
 
     // Border Color
     border-color-footer: #f9f9f9,
+    border-color-radio-inner: #dcdfe6,
 
     // Perfect Scrollbar
     ps__thumb_color: #aaa,
@@ -57,10 +67,14 @@ $themes: (
     font-color-link-hover: #111111,
     font-color-link-active: #fff,
     font-color-link-disabled: #dddddd35,
+    font-color-head: #fff,
     font-color-head-link: #eeacab,
     font-color-head-link-hover: #e6e6e6,
     font-color-head-link-active: #fff,
     font-color-head-link-disabled: #dddddd35,
+    font-color-radio-inner: #606266,
+    font-color-radio-inner-hover: #565656,
+    font-color-radio-inner-active: #fff,
   ),
 
   // 暗黑
@@ -73,9 +87,12 @@ $themes: (
     bg-color-popover: #363636,
     bg-color-aside: #202020,
     bg-color-footer: #252525,
+    bg-color-radio-inner-hover: #3f3f3f,
+    bg-color-radio-inner-active: #606266,
 
     // Border Color
     border-color-footer: #242424,
+    border-color-radio-inner: #606266,
 
     // Perfect Scrollbar
     ps__thumb_color: #444,
@@ -86,10 +103,14 @@ $themes: (
     font-color-link-hover: #e6e6e6,
     font-color-link-active: #d63a36,
     font-color-link-disabled: #dddddd65,
+    font-color-head: #fff,
     font-color-head-link: #a3a3a3,
     font-color-head-link-hover: #e6e6e6,
     font-color-head-link-active: #d63a36,
     font-color-head-link-disabled: #dddddd65,
+    font-color-radio-inner: #a3a3a3,
+    font-color-radio-inner-hover: #a3a3a3,
+    font-color-radio-inner-active: #e4e4e4,
   ),
     
 );

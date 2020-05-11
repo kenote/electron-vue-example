@@ -1,6 +1,6 @@
 <template>
-  <div class="main-drawer" v-bind:class="placement" :style="styles" v-show="visible" ref="theDrawer">
-    aaa
+  <div class="win-drawer" v-bind:class="placement" :style="styles" v-show="visible" ref="theDrawer">
+    <slot></slot>
   </div>
 </template>
 
@@ -8,25 +8,17 @@
 import { Component, Vue, Provide, Prop, Watch } from 'vue-property-decorator'
 import { Route } from 'vue-router'
 
-@Component<MainDrawer>({
-  name: 'main-drawer',
+@Component<WinDrawer>({
+  name: 'win-drawer',
   created () {
     this.getStyles(this.width)
   },
   mounted () {
-    // let drawer = this.$refs['theDrawer'] as HTMLElement
-
-    // document.addEventListener('click', evt => {
-    //   let eventPath: string[] = evt['path'].map( o => o.className)
-    //   // console.log(!eventPath.includes(drawer.className) || !eventPath.includes('iconfont icon-email'))
-    //   if (!eventPath.includes(drawer.className)) {
-    //     this.visible && this.$emit('close', null)
-    //   }
-    // })
+    
 
   }
 })
-export default class MainDrawer extends Vue {
+export default class WinDrawer extends Vue {
 
   @Prop({ default: 'right' }) placement!: 'top' | 'bottom' | 'left' | 'right'
   @Prop({ default: 300 }) width!: number
@@ -70,7 +62,7 @@ export default class MainDrawer extends Vue {
 
 <style lang="scss" scoped>
 @import '~/renderer/assets/scss/_themeify.scss';
-.main-drawer {
+.win-drawer {
   position: absolute;
   width: 360px;
   box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);

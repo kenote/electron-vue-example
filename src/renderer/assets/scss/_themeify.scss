@@ -27,3 +27,9 @@
     color: themed($color)!important;
   }
 }
+
+@mixin border-color($color) {
+  @include themeify() {
+    border-color: themed($color)!important;
+  }
+}

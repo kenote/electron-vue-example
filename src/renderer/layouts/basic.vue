@@ -4,8 +4,15 @@
       <topbar-logo :is-macos="platform === 'darwin'">
         
       </topbar-logo>
-      <div class="topbar-main">
-        <div style="width:100%;height:100%" @dblclick="handleDbclick">   </div>
+      <div class="topbar-main" v-bind:class="platform === 'darwin' ? '' : 'topbar-main__win'">
+        <div class="topbar-main__left" @dblclick="handleDbclick" :style="platform != 'darwin' ? 'padding-left:0' : ''">
+          <template v-if="platform === 'darwin'">
+            <span>{{ $route.meta.title || '' }}</span>
+          </template>
+          <template v-else>
+            <win-controls :is-macos="platform === 'darwin'" />
+          </template>
+        </div>
         <div style="display:flex;align-items:center">
           <router-link class="iconfont icon-setting" to="/setting"></router-link>
           <!-- 打开/关闭 信件 -->
@@ -62,7 +69,7 @@
             end
           </div>
         </perfect-scrollbar>
-          <div ref="handle" class="split-handle"></div>
+        <div ref="handle" class="split-handle"></div>
       </el-aside>
       <el-main ref="theMain">
         <perfect-scrollbar>
@@ -74,7 +81,7 @@
           <!-- <div></div> -->
         </perfect-scrollbar>
       </el-main>
-      <main-drawer :width="350" :visible="visibleEmail" @close="handleCloseEmail" />
+      <mail-drawer :visible="visibleEmail" @close="handleCloseEmail" ref="theMailDrawer" />
     </el-container>
     <footer>
 
@@ -107,6 +114,7 @@ const SIDER_WIDTH_MAX: number = 400
       this.ismaximize = false
     })
     this.themeName = this.theme
+    this.meta = this.$route.meta
   },
   mounted () {
     this.handleResize()
@@ -120,7 +128,6 @@ const SIDER_WIDTH_MAX: number = 400
 })
 export default class BasicLayout extends Vue {
 
-  // @State('setting') Setting!: setting.State
   @Setting.State theme!: string
 
   @Provide() platform: string = this.$electron.remote.process.platform
@@ -130,11 +137,14 @@ export default class BasicLayout extends Vue {
   @Provide() themeName: string = 'auto'
   @Provide() visibleEmail: boolean = false
   @Provide() selectThemeStyle: string = ''
+  @Provide() meta: any = {}
 
   @Watch('themeName')
   onChangeTheme (theme: string): void {
     this.$store.commit(settingTypes.SETHEME, theme)
   }
+
+  // @Watch()
 
   handleShowThemes () {
     this.selectThemeStyle = 'showopen'
@@ -153,8 +163,10 @@ export default class BasicLayout extends Vue {
   }
 
   handleResize () {
-    setContainerHeight(this.$refs['theAside'] as Vue)
-    setContainerHeight(this.$refs['theMain'] as Vue)
+    let { theAside, theMain, theMailDrawer } = this.$refs as Record<string, Vue>
+    setContainerHeight(theAside.$el)
+    setContainerHeight(theMain.$el)
+    setContainerHeight(theMailDrawer.$el, theMain.$el.clientHeight - 55)
   }
 
   handleResizeSide () {
@@ -172,7 +184,7 @@ export default class BasicLayout extends Vue {
     document.onmousemove = e => {
       if (!dragging) return
       clickX = e.pageX
-      if (!(clickX > 200 && clickX < 400)) {
+      if (!(clickX > SIDER_WIDTH_DEFAULT && clickX < SIDER_WIDTH_MAX)) {
         return
       }
       this.siderWidth = clickX
@@ -197,10 +209,10 @@ export default class BasicLayout extends Vue {
   
 }
 
-function setContainerHeight (ele: Vue): void {
+function setContainerHeight (ele: Element, height?: number): void {
   try {
-    let ps : HTMLElement = ele.$children[0]['ps'].element
-    ps.style.height = ele.$el.clientHeight + 'px'
+    let ps : HTMLElement = ele.querySelector('.ps') as HTMLElement // ele.$children[0]['ps'].element
+    ps.style.height = (height || ele.clientHeight) + 'px'
   } catch (error) {
     console.error(error)
   }
@@ -227,7 +239,19 @@ header {
     align-items: center;
     padding: 0 5px 0 0;
 
+    .topbar-main__left {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding-left: 30px;
 
+      span {
+        @include font-color('font-color-head');
+        font-size: 14px;
+        font-weight: 500;
+      }
+    }
 
     a.iconfont, span>.iconfont {
       padding: 4px;
@@ -252,6 +276,7 @@ header {
       }
 
       &:hover {
+        @include font-color('font-color-head-link-hover');
         @include background-color('bg-color-header-iconhover');
       }
 
@@ -275,6 +300,16 @@ header {
         @include font-color('font-color-head-link-active');
         @include background-color('bg-color-header-iconhover');
       }
+    }
+
+    &.topbar-main__win {
+
+      a.iconfont, span>.iconfont {
+        &:hover {
+          background-color: transparent !important;
+        }
+      }
+        
     }
   }
 }
@@ -317,8 +352,8 @@ footer {
   border-top: 1px transparent solid;
   @include background-color('bg-color-footer');
   @include themeify {
-      border-color: themed('border-color-footer')!important;
-    }
+    border-color: themed('border-color-footer')!important;
+  }
 }
 
 

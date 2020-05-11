@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import {
   Button,
+  ButtonGroup,
   DatePicker,
   Container,
   Header,
@@ -9,10 +10,13 @@ import {
   Footer,
   Alert,
   Popover,
-  Drawer
+  Drawer,
+  RadioButton,
+  RadioGroup
 } from 'element-ui'
 
 Vue.use(Button)
+Vue.use(ButtonGroup)
 Vue.use(DatePicker)
 // 容器相关
 Vue.use(Container)
@@ -25,3 +29,5 @@ Vue.use(Alert)
 Vue.use(Popover)
 
 Vue.use(Drawer)
+Vue.use(RadioButton)
+Vue.use(RadioGroup)

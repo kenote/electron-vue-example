@@ -1,7 +1,7 @@
 <template>
   <div class="topbar-logo" v-if="isMacos">
     <win-tools :is-macos="isMacos" v-if="isMacos" />
-    <win-controls v-if="isMacos"  />
+    <win-controls :is-macos="isMacos" v-if="isMacos"  />
   </div>
   <div class="topbar-logo" v-else>
     <img src="../../assets/images/logo.svg" class="logo"  />

@@ -4,7 +4,10 @@ const settingRoutes: RouteConfig[] = [
   {
     path: '/setting',
     name: 'setting',
-    component: () => import('~/renderer/views/setting')
+    component: () => import('~/renderer/views/setting'),
+    meta: {
+      title: '设置'
+    }
   }
 ]
 

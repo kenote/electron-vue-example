@@ -89,6 +89,7 @@ export default class WinTools extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '~/renderer/assets/scss/_themeify.scss';
 .win-tools {
   width: 60px;
   height: 30px;
@@ -162,15 +163,32 @@ export default class WinTools extends Vue {
   padding: 6px;
   -webkit-app-region: no-drag;
 
+  &::before {
+    content: "";
+    @include background-color('font-color-head-link');
+    height: 16px;
+    width: 1px;
+    margin: 4px 0 8px 0;
+    opacity: .4;
+  }
+
   a {
-    color: #666666;
+    @include font-color('font-color-head-link');
     font-size: 20px;
     padding: 2px;
     display: block;
     cursor: default;
 
+    &:first-child {
+      margin-left: 10px;
+    }
+
+    &:last-child {
+      margin-right: 0 !important;
+    }
+
     &:hover {
-      color: #111111;
+      @include font-color('font-color-head-link-hover');
     }
   }
 }
